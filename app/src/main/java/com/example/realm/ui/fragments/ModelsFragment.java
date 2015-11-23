@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.realm.R;
 import com.example.realm.db.DataService;
+import com.example.realm.db.ModelsStore;
 import com.example.realm.model.Model;
 import com.example.realm.ui.BaseAppFragment;
 import com.example.realm.ui.adapters.ModelsListAdapter;
@@ -23,7 +24,7 @@ import java.util.UUID;
 /**
  * Fragment for display models list
  */
-public class ModelsFragment extends BaseAppFragment {
+public class ModelsFragment extends BaseAppFragment implements DataService.UpdateListener {
 
     private ModelsListAdapter mAdapter;
 
@@ -52,6 +53,8 @@ public class ModelsFragment extends BaseAppFragment {
             updateData();
         }
         recyclerView.setAdapter(mAdapter);
+
+        DataService.subscribeDataUpdates(ModelsStore.class, this);
     }
 
     @Override
@@ -84,12 +87,7 @@ public class ModelsFragment extends BaseAppFragment {
                 .showAlertDialogOnError()
                 .showProgressDialog();
 
-        executeAsync(callable, new AsyncOperation.Callback<Void>() {
-            @Override
-            public void onComplete(Void result) {
-                updateData();
-            }
-        }, null);
+        executeAsync(callable, null, null);
     }
 
     private void addRandomItem() {
@@ -102,12 +100,7 @@ public class ModelsFragment extends BaseAppFragment {
         }
         .showAlertDialogOnError();
 
-        executeAsync(callable, new AsyncOperation.Callback<Void>() {
-            @Override
-            public void onComplete(Void result) {
-                updateData();
-            }
-        }, null);
+        executeAsync(callable, null, null);
     }
 
     private void updateData() {
@@ -125,5 +118,10 @@ public class ModelsFragment extends BaseAppFragment {
                 mAdapter.setModels(result);
             }
         }, null);
+    }
+
+    @Override
+    public void onDataUpdated() {
+        updateData();
     }
 }

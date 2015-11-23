@@ -29,6 +29,7 @@ public class ModelsStoreRealm implements ModelsStore {
         realm.copyToRealm(ModelRealm.sMapper.toRealmObject(model));
         realm.commitTransaction();
         realm.close();
+        DataService.notifyDataUpdated(ModelsStore.class);
     }
 
     @Override
@@ -38,5 +39,6 @@ public class ModelsStoreRealm implements ModelsStore {
         realm.clear(ModelRealm.class);
         realm.commitTransaction();
         realm.close();
+        DataService.notifyDataUpdated(ModelsStore.class);
     }
 }

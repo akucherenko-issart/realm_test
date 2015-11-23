@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
 import com.example.realm.R;
+import com.example.realm.db.DataService;
 import com.example.realm.utils.AsyncOperation;
 
 import java.util.concurrent.Callable;
@@ -38,6 +39,14 @@ public abstract class BaseAppFragment extends Fragment {
         public boolean isShowAlertDialogOnError() {
             return mShowAlertDialogOnError;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (this instanceof DataService.UpdateListener) {
+            DataService.unsubscribeDataUpdates((DataService.UpdateListener) this);
+        }
+        super.onDestroy();
     }
 
     protected <T> void executeAsync(final AsyncOperationCallable<T> callable,
