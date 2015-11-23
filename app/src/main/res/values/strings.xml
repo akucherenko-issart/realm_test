@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Realm</string>
+    <string name="action_add_item">Add item</string>
+
+    <string name="retry">Retry</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="loading">Loading…</string>
+</resources>
